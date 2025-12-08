@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Parker Kingston</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link href="css/fsstyles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav>
+            <div>           
+                    <ul>
+			<li><a href="index.html">Home</a></li>
+                        <li><a href="index.html">About</a></li>
+                        <li><a href="index.html">Education</a></li>
+			<li><a href="index.html">Experience</a></li>
+			<li><a href="index.html">Skills</a></li>
+			<li><a href="index.html">Contact</a></li>
+                        <li><a href="fromscratch.html">Hobbies</a></li>	
+			<li><a href="wordlegame.html">Wordle</a></li>		        
+                    </ul>
+             </div>
+        </nav>
+
+        <!-- wordle section-->
+<section id="Wordle">
+<div class="container px-4">
+<div class="row gx-4 justify-content-center">
+<div class="col-lg-8">
+
+<h2>Wordle</h2>
+ 
+
+<style>
+
+
+  .container { text-align: center; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    gap: 10px; margin: 20px auto; width: max-content;
+  }
+
+  .tile {
+    width: 50px; height: 50px; border: 2px solid #ccc;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 24px; font-weight: bold; text-transform: uppercase;
+    background: #fff;
+  }
+
+  .correct { background: #6aaa64; color: white; }
+  .present { background: #c9b458; color: white; }
+  .absent { background: #787c7e; color: white; }
+
+  #keyboard button {
+    padding: 10px 12px; margin: 4px; border: none;
+    background: #ddd; font-size: 14px; border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #message { margin-top: 15px; font-size: 20px; font-weight: bold; }
+</style>
+
+
+<body>
+<div class="container">
+
+
+  <div id="grid" class="grid"></div>
+
+  <div id="keyboard"></div>
+
+  <p id="message"></p>
+</div>
+
+<script>
+  const wordList = ["apple", "chair", "track", "heart", "spice", "light", "drink"];
+  const solution = wordList[Math.floor(Math.random() * wordList.length)];
+  let currentGuess = "";
+  let row = 0;
+
+  const grid = document.getElementById("grid");
+  const message = document.getElementById("message");
+  const keyboard = document.getElementById("keyboard");
+
+  // Create empty tiles
+  for (let i = 0; i < 30; i++) {
+    const div = document.createElement("div");
+    div.classList.add("tile");
+    grid.appendChild(div);
+  }
+
+  // On-screen keyboard
+  const keys = "QWERTYUIOPASDFGHJKLZXCVBNM";
+  keys.split("").forEach(k => {
+    const btn = document.createElement("button");
+    btn.textContent = k;
+    btn.onclick = () => pressKey(k);
+    keyboard.appendChild(btn);
+  });
+
+  const enterBtn = document.createElement("button");
+  enterBtn.textContent = "ENTER";
+  enterBtn.onclick = submitGuess;
+  keyboard.appendChild(enterBtn);
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "DEL";
+  deleteBtn.onclick = deleteLetter;
+  keyboard.appendChild(deleteBtn);
+
+  function pressKey(letter) {
+    if (currentGuess.length < 5) {
+      currentGuess += letter.toLowerCase();
+      updateGrid();
+    }
+  }
+
+  function deleteLetter() {
+    currentGuess = currentGuess.slice(0, -1);
+    updateGrid();
+  }
+
+  function updateGrid() {
+    const start = row * 5;
+    for (let i = 0; i < 5; i++) {
+      const tile = grid.children[start + i];
+      tile.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : "";
+    }
+  }
+
+  function submitGuess() {
+    if (currentGuess.length !== 5) return;
+
+    const start = row * 5;
+
+    for (let i = 0; i < 5; i++) {
+      const tile = grid.children[start + i];
+      const letter = currentGuess[i];
+
+      if (letter === solution[i]) {
+        tile.classList.add("correct");
+      } else if (solution.includes(letter)) {
+        tile.classList.add("present");
+      } else {
+        tile.classList.add("absent");
+      }
+    }
+
+    if (currentGuess === solution) {
+      message.textContent = "You Win! 🎉";
+      disableKeyboard();
+      return;
+    }
+
+    row++;
+    currentGuess = "";
+
+    if (row === 6) {
+      message.textContent = `You Lose! Word was: ${solution.toUpperCase()}`;
+      disableKeyboard();
+    }
+  }
+
+  function disableKeyboard() {
+    [...keyboard.children].forEach(btn => btn.disabled = true);
+  }
+</script>
+</div>
+</div>
+</div>
+</section>
+
+    </body>
+</html>
